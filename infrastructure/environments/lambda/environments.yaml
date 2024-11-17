@@ -1,0 +1,11 @@
+healthcheck-lambda:
+  architecture: [x86_64]
+  description: "Lambda function for health checking CloudFlare API"
+  runtime: python3.12
+  timeout: 60
+  handler: lambda_function.lambda_handler
+  filename: processing_code.zip
+  environment: 
+    api_healthcheck_url: https://www.cloudflarestatus.com/api/v2/status.json
+    S3_BUCKET: csv-healthcheck-bucket
+

@@ -1,0 +1,43 @@
+image: 
+  name: hashicorp/terraform:1.9.2
+  entrypoint: [""]
+
+stages:
+  - codescan
+  - infra_validate
+  - infra_deploy
+  - apply
+
+codescan:
+  image: 
+    name: bridgecrew/checkov:latest
+    entrypoint: [""]
+  stage: codescan
+  script:
+    - echo "Code scanning with Checkov"
+    - checkov -d .
+  allow_failure: true 
+  rules:
+    - when: always 
+
+infra_validate:
+  stage: infra_validate
+  script:
+    - terraform version
+    - terraform init
+    - terraform validate
+  allow_failure: false
+  rules:
+    - when: always
+
+infra_deploy:
+  stage: infra_deploy
+  script:
+    - terraform init
+    - terraform plan -out=terraform.tfplan
+    - terraform apply -auto-approve terraform.tfplan
+  allow_failure: false
+  rules:
+    - when: always
+  dependencies: 
+    - infra_validate

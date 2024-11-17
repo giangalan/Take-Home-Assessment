@@ -1,0 +1,2 @@
+lambda-healthcheck-policy:
+  role_name: healthcheck-lambda-role
