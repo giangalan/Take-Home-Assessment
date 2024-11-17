@@ -23,7 +23,7 @@ codescan:
 infra_validate:
   stage: infra_validate
   script:
-    - terraform version
+    - cd infrastructure
     - terraform init
     - terraform validate
   allow_failure: false
