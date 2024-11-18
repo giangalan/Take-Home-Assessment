@@ -13,6 +13,7 @@ Assessment for DevSecOps interviewing
 
 For using this source code, you have to provide these requirements
 - **AWS environment** AWS environment is required for deploying the infrastructure (Must have enough permission for creating and managing resources)
+- **S3 Backend** S3 bucket for Terraform backend should be created and define the bucket name in variable `bucket` /infrastructure/provider.tf
 - **Gitlab environment** Gitlab is for code repository and pipeline executing
 - **Gitlab runner** A Gitlab runner for executing the pipeline will required
     - `docker` for pulling images required in the pipeline
