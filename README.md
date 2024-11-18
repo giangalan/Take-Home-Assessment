@@ -65,6 +65,7 @@ The pipeline contain these steps:
         - **infra_destroy** Step for Terraform init and validate using hashicorp/terraform image
             - This step will be executed manually in the pipeline
             - This step cannot be passed when it is failed
+            - Remember to empty the S3 bucket "csv-healthcheck-bucket" so as to destroy the resources without any error
 
 3. **Dashboard and alert**
     - **Dashboard setup**
