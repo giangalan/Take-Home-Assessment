@@ -7,6 +7,7 @@ stages:
   - infra_validate
   - infra_deploy
   - lambda-redeploy
+  - infra_destroy
 
 codescan:
   image: 
@@ -40,8 +41,7 @@ infra_deploy:
     - terraform apply -auto-approve terraform.tfplan
   allow_failure: false
   rules:
-    - changes: 
-      - 'infrastructure/*'
+    - when: manual
   dependencies: 
     - infra_validate
 
@@ -59,4 +59,15 @@ lambda-redeploy:
     - changes: 
       - 'processing_code/*'
   dependencies: 
-    - infra_validate
+    - infra_deploy
+
+infra_destroy:
+  stage: infra_destroy
+  script:
+    - cd infrastructure
+    - terraform init
+    - terraform plan
+    - terraform destroy --auto-approve
+  allow_failure: false
+  rules:
+    - when: manual
