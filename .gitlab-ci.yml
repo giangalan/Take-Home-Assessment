@@ -6,7 +6,7 @@ stages:
   - codescan
   - infra_validate
   - infra_deploy
-  - apply
+  - lambda-redeploy
 
 codescan:
   image: 
@@ -24,6 +24,7 @@ infra_validate:
   stage: infra_validate
   script:
     - cd infrastructure
+    - terraform version
     - terraform init
     - terraform validate
   allow_failure: false
@@ -33,11 +34,29 @@ infra_validate:
 infra_deploy:
   stage: infra_deploy
   script:
+    - cd infrastructure
     - terraform init
     - terraform plan -out=terraform.tfplan
     - terraform apply -auto-approve terraform.tfplan
   allow_failure: false
   rules:
-    - when: always
+    - changes: 
+      - 'infrastructure/*'
+  dependencies: 
+    - infra_validate
+
+lambda-redeploy:
+  stage: lambda-redeploy
+  script:
+    - cd infrastructure
+    - terraform init
+    - terraform plan
+    - terraform destroy -target=module.lambda --auto-approve
+    - terraform destroy -target=module.eventBridge --auto-approve
+    - terraform apply --auto-approve
+  allow_failure: false
+  rules:
+    - changes: 
+      - 'processing_code/*'
   dependencies: 
     - infra_validate
