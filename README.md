@@ -1,4 +1,4 @@
-# Take-Home-Assessment
+ # Take-Home-Assessment
 
 Assessment for DevSecOps interviewing
 
@@ -52,18 +52,18 @@ The pipeline contain these steps:
         - **codescan** Step for code scanning using bridgecrew/checkov image
             - This step will be executed automatically in the pipeline
             - This step can be passed even it is failed
-        - **infra_validate** Step for Terraform init and validate using hashicorp/terraform image
+        - **infra_validate** Step for Terraform init and validate 
             - This step will be executed automatically in the pipeline
             - This step cannot be passed when it is failed
-        - **infra_deploy** Step for Terraform init and validate using hashicorp/terraform image
+        - **infra_deploy** Step for Terraform plan and apply
             - This step will be executed manually in the pipeline
             - This step cannot be passed when it is failed
             - This step depend on infra_validate
-        - **lambda_redeploy** Step for Terraform init and validate using hashicorp/terraform image
+        - **lambda_redeploy** Step for Terraform init, plan and apply for moudles Lambda and EventBridge 
             - This step will be executed automatically in the pipeline when changes in the processing code
             - This step cannot be passed when it is failed
             - This step depend on infra_deploy
-        - **infra_destroy** Step for Terraform init and validate using hashicorp/terraform image
+        - **infra_destroy** Step for Terraform init, plan and destroy
             - This step will be executed manually in the pipeline
             - This step cannot be passed when it is failed
             - Remember to empty the S3 bucket "csv-healthcheck-bucket" so as to destroy the resources without any error
